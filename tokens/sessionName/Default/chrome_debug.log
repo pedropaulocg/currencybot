@@ -1,5 +1,0 @@
-[0117/101132.591:INFO:CONSOLE(7)] "Another connection wants to delete database 'wawc'. Closing db now to resume the delete request.", source: https://web.whatsapp.com/vendor1~app.0c8e960e5dfd7020f562.js (7)
-[0117/101135.431:INFO:CONSOLE(1)] "Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Partial response (status code 206) is unsupported", source: https://web.whatsapp.com/serviceworker.js (1)
-[0117/101135.432:INFO:CONSOLE(1)] "Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Partial response (status code 206) is unsupported", source: https://web.whatsapp.com/serviceworker.js (1)
-[0117/101313.850:INFO:CONSOLE(46)] "Uncaught (in promise) TypeError: e.isLid is not a function", source: https://web.whatsapp.com/app.a8429b8147f1b90a2f71.js (46)
-[0117/101316.413:INFO:CONSOLE(46)] "Uncaught (in promise) TypeError: e.isLid is not a function", source: https://web.whatsapp.com/app.a8429b8147f1b90a2f71.js (46)
