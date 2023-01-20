@@ -97,7 +97,7 @@ async function triggerPreco() {
 const calcularValor = (moeda, valor) => {
   let resultado = moeda * valor
 
-  return resultado.toFixed(2);
+  return resultado;
 }
 
 async function requisicao(moeda) {
