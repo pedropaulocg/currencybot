@@ -26,9 +26,24 @@ client.on(events.QR, qr => {
   qrcode.generate(qr, { small: true })
 })
 
-var notification = new CronJob(
+var notification8 = new CronJob(
+  '00 00 08 * * *',
+  notificarEur(8),
+  null,
+  true,
+  'America/Recife'
+);
+var notification12 = new CronJob(
   '00 00 12 * * *',
-  notificarEur,
+  notificarEur(12),
+  null,
+  true,
+  'America/Recife'
+);
+
+var notification17 = new CronJob(
+  '00 00 17 * * *',
+  notificarEur(17),
   null,
   true,
   'America/Recife'
@@ -44,7 +59,9 @@ var trigger = new CronJob(
 
 client.on(events.READY, () => {
   console.log("client pronto");
-  notification.start()
+  notification8.start()
+  notification12.start()
+  notification17.start()
   trigger.start();
 })
 
@@ -53,8 +70,12 @@ client.on(events.MESSAGE, async message => {
   let mensagem = message.body.toLowerCase()
   if (mensagem == "entrar na lista") {
     cadastrarUser(message.from)
-    client.sendMessage(message.from, `Cadastrado com sucesso!`)
-  } else {
+    client.sendMessage(message.from, `Cadastrado com sucesso! Caso queira sair digite sair da lista`)
+  } else if(mensagem == "sair da lista"){
+    removerUser(message.from)
+    client.sendMessage(message.from, `Removido da lista com sucesso`)
+  }
+  else {
     let moeda
     let valor = 1
     if (regex.test(message.body)) {
@@ -71,16 +92,18 @@ client.on(events.MESSAGE, async message => {
       const data = await requisicao(moeda)
       client.sendMessage(message.from,`${valor} ${moeda} ta valendo R$${calcularValor(data[`${moeda}BRL`].ask, valor)}`)
     }catch{
-      client.sendMessage(message.from, `Olá sou o bot de moeda, eu converto qualquer codigo de moeda que vc colocar para o real. O formato da mensagem deve ser um valor acompanhado da moeda desejada por ex: \n 20 EUR \n USD \n \nInfelizmente não consegui encontrar a moeda que vc digitou. Verifica se ta tudo ok e tenta novamente!`)
+      client.sendMessage(message.from, `Olá sou o bot de moeda, eu converto qualquer codigo de moeda que vc colocar para o real.`)
+      client.sendMessage(message.from, `O formato da mensagem deve ser um valor acompanhado da moeda desejada por ex: \n 20 EUR \n USD`)
+      client.sendMessage(message.from, `Para entrar na minha lista de contato onde eu informo todo dia as 8h, 12h e as 18h o valor do euro me envie 'Entrar na lista' que eu te cadastro.`)
     }
   }
 })
 
-async function notificarEur() {
+async function notificarEur(hora) {
   if (listaUser.length > 0) {
     const data = await requisicao("EUR")
     listaUser.forEach(item => {
-      client.sendMessage(item, "Olá são 12h e o euro esta valendo R$" + data[`EURBRL`].ask)
+      client.sendMessage(item, `Olá são ${hora}h e o euro esta valendo R$` + data[`EURBRL`].ask)
     });
   }
 }
@@ -110,6 +133,11 @@ function cadastrarUser(user) {
   if (!listaUser.includes(user)) {
     listaUser.push(user)
   }
+}
+
+function removerUser(user){
+  let remove = listaUser.indexOf(user);
+  listaUser.splice(remove, 1)
 }
 
 
