@@ -4,11 +4,24 @@ const qrcode = require('qrcode-terminal')
 const fs = require('fs')
 const CronJob = require('cron').CronJob
 const regex = /[0-9]/;
+const listaUser = []
 const events = {
   MESSAGE: "message",
   READY: "ready",
   QR: "qr"
 }
+class User {
+  name
+  number
+
+  constructor(name, number){
+    this.name = name;
+    this.number = number
+  }
+}
+
+
+
 const SESSION_FILE_PATH = './session.json';
 let sessionData;
 if (fs.existsSync(SESSION_FILE_PATH)) {
@@ -27,23 +40,44 @@ client.on(events.QR, qr => {
 })
 
 var notification8 = new CronJob(
-  '00 00 08 * * *',
-  notificarEur(8),
+  '0 8 * * *',
+  async function () {
+    if (listaUser.length > 0) {
+      const data = await requisicao("EUR")
+      listaUser.forEach(item => {
+        client.sendMessage(item.number, `Olá ${item.name} bom dia, são 8h e o euro esta valendo R$` + data[`EURBRL`].ask)
+      });
+    }
+  },
   null,
   true,
   'America/Recife'
 );
 var notification12 = new CronJob(
   '00 00 12 * * *',
-  notificarEur(12),
+  async function () {
+    if (listaUser.length > 0) {
+      const data = await requisicao("EUR")
+      listaUser.forEach(item => {
+        client.sendMessage(item.number, `Olá ${item.name} boa tarde, são 12h e o euro esta valendo R$` + data[`EURBRL`].ask)
+      });
+    }
+  },
   null,
   true,
   'America/Recife'
 );
 
-var notification17 = new CronJob(
-  '00 00 17 * * *',
-  notificarEur(17),
+var notification18 = new CronJob(
+  '00 00 18 * * *',
+  async function () {
+    if (listaUser.length > 0) {
+      const data = await requisicao("EUR")
+      listaUser.forEach(item => {
+        client.sendMessage(item.number, `Olá ${item.name} boa noite, são 18h e o euro esta valendo R$` + data[`EURBRL`].ask)
+      });
+    }
+  },
   null,
   true,
   'America/Recife'
@@ -61,15 +95,16 @@ client.on(events.READY, () => {
   console.log("client pronto");
   notification8.start()
   notification12.start()
-  notification17.start()
+  notification18.start()
   trigger.start();
 })
 
 
 client.on(events.MESSAGE, async message => {
   let mensagem = message.body.toLowerCase()
+  let name = JSON.stringify(message).split('"notifyName":"')[1]
   if (mensagem == "entrar na lista") {
-    cadastrarUser(message.from)
+    cadastrarUser(message.from, name.split('",')[0])
     client.sendMessage(message.from, `Cadastrado com sucesso! Caso queira sair digite sair da lista`)
   } else if(mensagem == "sair da lista"){
     removerUser(message.from)
@@ -99,20 +134,11 @@ client.on(events.MESSAGE, async message => {
   }
 })
 
-async function notificarEur(hora) {
-  if (listaUser.length > 0) {
-    const data = await requisicao("EUR")
-    listaUser.forEach(item => {
-      client.sendMessage(item, `Olá são ${hora}h e o euro esta valendo R$` + data[`EURBRL`].ask)
-    });
-  }
-}
-
 async function triggerPreco() {
   const data = await requisicao("EUR")
   if (data['EURBRL'].ask <= 5.50 && listaUser.length > 0) {
     listaUser.forEach(item => {
-      client.sendMessage(item, 'Opa o euro ta bom pra comprar ein!! ele ta valendo R$' + data[`EURBRL`].ask)
+      client.sendMessage(item.number, 'Opa, o euro esta num preço bom para compra: R$' + data[`EURBRL`].ask)
     })
   }
 }
@@ -128,15 +154,17 @@ async function requisicao(moeda) {
     return result.data
 }
 
-const listaUser = []
-function cadastrarUser(user) {
+function cadastrarUser(number, name) {
+  let user = new User(name, number)
   if (!listaUser.includes(user)) {
     listaUser.push(user)
   }
 }
 
 function removerUser(user){
-  let remove = listaUser.indexOf(user);
+  let remove = listaUser.findIndex(item => {
+    item.number = user
+  });
   listaUser.splice(remove, 1)
 }
 
