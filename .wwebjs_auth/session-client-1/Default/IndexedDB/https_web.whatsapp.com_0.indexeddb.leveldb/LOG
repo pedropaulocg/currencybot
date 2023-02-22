@@ -1,0 +1,9 @@
+2023/02/22-17:35:12.896 697c Creating DB D:\Projetos\backend\currencyBot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2023/02/22-17:35:12.984 697c Reusing MANIFEST D:\Projetos\backend\currencyBot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/02/22-17:35:13.158 697c Level-0 table #5: started
+2023/02/22-17:35:13.233 697c Level-0 table #5: 7191 bytes OK
+2023/02/22-17:35:13.316 697c Delete type=0 #3
+2023/02/22-17:35:13.316 697c Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/02/22-17:35:57.537 6a84 Level-0 table #7: started
+2023/02/22-17:35:57.633 6a84 Level-0 table #7: 1013385 bytes OK
+2023/02/22-17:35:57.683 6a84 Delete type=0 #4
