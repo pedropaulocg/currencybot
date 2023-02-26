@@ -1,4 +1,4 @@
-Esse é um bot de moedas para whatsapp.
+Esse é um bot de conversão de moedas para o real para whatsapp.
 
 Ele irá te dizer o valor de qualquer moeda que voce perguntar em real. E tambem tem uma lista onde voce pode se cadastrar em uma moeda especifica, onde todo dia ele ira te dizer o valor dessa moeda as 8h, 12h e 18h e perguntar um valor para caso a moeda atinja esse valor voce seja notificado.
 
