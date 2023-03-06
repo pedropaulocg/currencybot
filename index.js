@@ -7,12 +7,11 @@ const CronJob = require('cron').CronJob
 
 // Import das classes e services
 const UserTemp = require("./src/models/UserTemp")
-const { cadastrarUser, removerUser, minhasListas } = require("./src/services/userService")
+const { cadastrarUser, removerUser, minhasListas, listarUsuarios } = require("./src/services/userService")
 
 // Constantes gerais
 const regex = /[0-9]/;
 const regexList = /sair da lista (\d+)/i
-const listaUser = []
 const userTemporario = []
 const events = {
   MESSAGE: "message",
@@ -38,7 +37,16 @@ client.on(events.QR, qr => {
   qrcode.generate(qr, { small: true })
 })
 
-// Envia as notificações nosn horarios 8, 12 e 18 e caso o preço escolhido seja atingido. Fazendo uma verificação do preço a cada 5 min
+// Função a ser chamada apos a conexão
+client.on(events.READY, () => {
+  console.log("client pronto");
+  notification8.start()
+  notification12.start()
+  notification18.start()
+  trigger.start();
+})
+
+// Chama funcoes de notificações nos horarios 8, 12 e 18. Fazendo uma verificação do preço a cada 5 min
 var notification8 = new CronJob(
   '0 8 * * *',
   () => {
@@ -75,15 +83,6 @@ var trigger = new CronJob(
   true,
   'America/Recife'
 )
-
-// Função a ser chamada apos a conexão
-client.on(events.READY, () => {
-  console.log("client pronto");
-  notification8.start()
-  notification12.start()
-  notification18.start()
-  trigger.start();
-})
 
 // Função ao receber mensagem
 client.on(events.MESSAGE, async message => {
@@ -153,15 +152,21 @@ client.on(events.MESSAGE, async message => {
   }
 })
 
+// Functions de verificacao de preco e envio da notificacao
+
 async function triggerPreco() {
-  listaUser.forEach(async item => {
-    setTimeout( async () => {
-      const data = await requisicao(item.coin)
-      if (data[`${item.coin}BRL`].ask <= item.price && listaUser.length > 0) {
-        client.sendMessage(item.number, `Opa, a moeda ${item.coin} atingiu o preço escolhido: R$` + data[`${item.coin}BRL`].ask)
-      }
-    }, 20000)
-  });
+  listarUsuarios().then(res => {
+    if (res.length > 0) {
+      res.forEach(async item => {
+        setTimeout( async () => {
+          const data = await requisicao(item.coin)
+          if (data[`${item.coin}BRL`].ask <= item.price) {
+            client.sendMessage(item.number, `Opa, a moeda ${item.coin} atingiu o preço escolhido: R$` + data[`${item.coin}BRL`].ask)
+          }
+        }, 20000)
+      });
+    }
+  })
 }
 
 async function notification(hora) {
@@ -173,12 +178,14 @@ async function notification(hora) {
   } else {
     saudacao = "boa noite"
   }
-  if (listaUser.length > 0) {
-    listaUser.forEach(async item => {
-      const data = await requisicao(item.coin)
-      client.sendMessage(item.number, `Olá ${item.name} ${saudacao}, são ${hora}h e a moeda ${item.coin} esta valendo R$` + data[`${item.coin}BRL`].ask)
-    });
-  }
+  listarUsuarios().then(res => {
+    if (res.length > 0) {
+      res.forEach(async item => {
+        const data = await requisicao(item.coin)
+        client.sendMessage(item.number, `Olá ${item.name} ${saudacao}, são ${hora}h e a moeda ${item.coin} esta valendo R$` + data[`${item.coin}BRL`].ask)
+      });
+    }
+  })
 }
 
 const calcularValor = (moeda, valor) => {

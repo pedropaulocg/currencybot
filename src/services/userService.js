@@ -70,8 +70,24 @@ async function minhasListas(number) {
   }
 }
 
+async function listarUsuarios() {
+  const selectSql = "SELECT * FROM users"
+  try{
+    const result = await new Promise((resolve, reject) => {
+      connection.query(selectSql, (err, result) => {
+        if (err) reject(err);
+        resolve(result)
+      })
+    })
+    return result
+  } catch(error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   cadastrarUser,
   removerUser,
-  minhasListas
+  minhasListas,
+  listarUsuarios
 }
