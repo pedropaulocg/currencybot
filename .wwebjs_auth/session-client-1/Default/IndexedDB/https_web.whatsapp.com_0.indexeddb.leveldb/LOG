@@ -1,3 +1,6 @@
-2023/03/06-20:27:33.398 6d80 Reusing MANIFEST C:\Users\Pedro Paulo\Desktop\Projects\Backend\currencybot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2023/03/06-20:27:33.398 6d80 Recovering log #72
-2023/03/06-20:27:33.489 6d80 Reusing old log C:\Users\Pedro Paulo\Desktop\Projects\Backend\currencybot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000072.log 
+2023/03/06-20:38:34.064 5ba4 Reusing MANIFEST C:\Users\Pedro Paulo\Desktop\Projects\Backend\currencybot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/03/06-20:38:34.064 5ba4 Recovering log #72
+2023/03/06-20:38:34.195 5ba4 Reusing old log C:\Users\Pedro Paulo\Desktop\Projects\Backend\currencybot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000072.log 
+2023/03/06-20:40:00.664 2d2c Level-0 table #78: started
+2023/03/06-20:40:00.684 2d2c Level-0 table #78: 1073345 bytes OK
+2023/03/06-20:40:00.685 2d2c Delete type=0 #72
