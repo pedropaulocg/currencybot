@@ -29,7 +29,11 @@ if (fs.existsSync(SESSION_FILE_PATH)) {
 const client = new Client({
   authStrategy: new LocalAuth({
     clientId: "client-1"
-  })
+  }),
+  puppeteer: {
+		args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    ignoreDefaultArgs: ['--disable-extensions']
+	}
 })
 
 // Gerar QRcode
