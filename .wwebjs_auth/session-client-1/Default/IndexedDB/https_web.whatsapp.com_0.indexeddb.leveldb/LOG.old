@@ -1,0 +1,11 @@
+2023/03/06-20:43:01.238 4c64 Reusing MANIFEST C:\Users\Pedro Paulo\Desktop\Projects\Backend\currencybot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/03/06-20:43:01.238 4c64 Recovering log #77
+2023/03/06-20:43:01.239 4c64 Reusing old log C:\Users\Pedro Paulo\Desktop\Projects\Backend\currencybot\.wwebjs_auth\session-client-1\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000077.log 
+2023/03/06-20:43:01.918 4888 Compacting 1@1 + 2@2 files
+2023/03/06-20:43:01.989 4888 Generated table #80@1: 57950 keys, 2219637 bytes
+2023/03/06-20:43:02.007 4888 Generated table #81@1: 23068 keys, 439474 bytes
+2023/03/06-20:43:02.007 4888 Compacted 1@1 + 2@2 files => 2659111 bytes
+2023/03/06-20:43:02.008 4888 compacted to: files[ 0 0 2 0 0 0 0 ]
+2023/03/06-20:43:02.008 4888 Delete type=2 #74
+2023/03/06-20:43:02.008 4888 Delete type=2 #75
+2023/03/06-20:43:02.008 4888 Delete type=2 #78
