@@ -19,7 +19,8 @@ const events = {
   QR: "qr"
 }
 const SESSION_FILE_PATH = './session.json';
-let sessionData;
+const boasVindas = ['Olá sou o bot de moeda, eu converto qualquer codigo de moeda que vc colocar para o real.','O formato da mensagem deve ser um valor acompanhado da moeda desejada por ex: \n 20 EUR \n USD', "Para entrar na minha lista de contato onde eu informo todo dia as 8h, 12h e as 18h o valor da moeda escolhida e tambem caso o valor dela seja abaixo do valor que voce selecionou me envie 'Entrar na lista' que eu te envio o passo a passo para o cadastro."]
+
 
 // Conexão com client e save
 if (fs.existsSync(SESSION_FILE_PATH)) {
@@ -135,23 +136,29 @@ client.on(events.MESSAGE, async message => {
   else {
     let moeda
     let valor = 1
-    if (regex.test(message.body)) {
-      let i = 0;
-      while (message.body[i] != " ") {
-        i++
+    if (!isNumber(message.body)) {
+      if (regex.test(message.body)) {
+        let i = 0;
+        while (message.body[i] != " ") {
+          i++
+        }
+        moeda = message.body.substr(i + 1).trim().toUpperCase();
+        valor = message.body.substr(0, i)
+      } else {
+        moeda = message.body.toUpperCase();
       }
-      moeda = message.body.substr(i + 1).trim().toUpperCase();
-      valor = message.body.substr(0, i)
+      try{
+        const data = await requisicao(moeda)
+        client.sendMessage(message.from,`${valor} ${moeda} ta valendo R$${calcularValor(data[`${moeda}BRL`].ask, valor)}`)
+      }catch{
+        boasVindas.forEach(item => {
+          client.sendMessage(message.from, item)
+          setTimeout(() => {
+          },2000)
+        })
+      }
     } else {
-      moeda = message.body.toUpperCase();
-    }
-    try{
-      const data = await requisicao(moeda)
-      client.sendMessage(message.from,`${valor} ${moeda} ta valendo R$${calcularValor(data[`${moeda}BRL`].ask, valor)}`)
-    }catch{
-      client.sendMessage(message.from, `Olá sou o bot de moeda, eu converto qualquer codigo de moeda que vc colocar para o real.`)
-      client.sendMessage(message.from, `O formato da mensagem deve ser um valor acompanhado da moeda desejada por ex: \n 20 EUR \n USD`)
-      client.sendMessage(message.from, `Para entrar na minha lista de contato onde eu informo todo dia as 8h, 12h e as 18h o valor da moeda escolhida e tambem caso o valor dela seja abaixo do valor que voce selecionou me envie 'Entrar na lista' que eu te envio o passo a passo para o cadastro.`)
+      client.sendMessage(message.from, "Lembre de digitar a moeda desejada antes do numero, ex: USD 10")
     }
   }
 })
@@ -172,6 +179,10 @@ async function triggerPreco() {
     }
   })
 }
+// verifica se eh numero
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
 async function notification(hora) {
   let saudacao
@@ -186,7 +197,7 @@ async function notification(hora) {
     if (res.length > 0) {
       res.forEach(async item => {
         const data = await requisicao(item.coin)
-        client.sendMessage(item.number, `Olá ${item.name} ${saudacao}, são ${hora}h e a moeda ${item.coin} esta valendo R$` + data[`${item.coin}BRL`].ask)
+        client.sendMessage(item.number, `Olá ${item.name} ${saudacao}, são ${hora}h e a moeda *${item.coin}* esta valendo *R$ ${data[`${item.coin}BRL`].ask}*`)
       });
     }
   })
