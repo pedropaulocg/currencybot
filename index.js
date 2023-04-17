@@ -7,7 +7,7 @@ const CronJob = require('cron').CronJob
 
 // Import das classes e services
 const UserTemp = require("./src/models/UserTemp")
-const { cadastrarUser, removerUser, minhasListas, listarUsuarios } = require("./src/services/userService")
+const { cadastrarUser, removerUser, minhasListas, listarUsuarios, silenciarLista } = require("./src/services/userService")
 
 // Constantes gerais
 const regex = /[0-9]/;
@@ -128,11 +128,19 @@ client.on(events.MESSAGE, async message => {
         })
       }
     })
-  } // else if (mensagem == "silenciar") {
-    // Em construção (não funciona ainda)
-    // let button = new Buttons("Button body", [{body: 'bt1'}, {body: 'bt1'},{body: 'bt1'}],'title', 'footer')
-    // client.sendMessage(message.from, button)
-  // }
+  } else if (mensagem == "mutar") {
+    silenciarLista(message.from).then(res => {
+      if(res) {
+        client.sendMessage(message.from, "Pronto! Voce não receberá mais mensagem de alerta de preço. Não se preocupe ainda irei te avisar nos horarios 8, 12 e 18 ok? Para voltar a receber notificação digite unmute")
+      }
+    })
+  } else if (mensagem == "unmute") {
+    silenciarLista(message.from).then(res => {
+      if(res) {
+        client.sendMessage(message.from, "Pronto! Você agora você recebera as notificações de preço")
+      }
+    })
+  }
   else {
     let moeda
     let valor = 1
@@ -171,8 +179,8 @@ async function triggerPreco() {
       res.forEach(async item => {
         setTimeout( async () => {
           const data = await requisicao(item.coin)
-          if (data[`${item.coin}BRL`].ask <= item.price) {
-            client.sendMessage(item.number, `Opa, a moeda ${item.coin} atingiu o preço escolhido: R$` + data[`${item.coin}BRL`].ask)
+          if (data[`${item.coin}BRL`].ask <= item.price && item.silenciar == false) {
+            client.sendMessage(item.number, `Opa, a moeda ${item.coin} atingiu o preço escolhido: R$` + data[`${item.coin}BRL`].ask + ". Caso queira me silenciar envie mutar.")
           }
         }, 20000)
       });

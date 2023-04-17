@@ -66,7 +66,7 @@ async function minhasListas(number) {
     return result
   } catch (error) {
     console.error(error)
-    return null // ou [] ou outro valor padrão que faça sentido no contexto da sua aplicação
+    return null
   }
 }
 
@@ -85,9 +85,25 @@ async function listarUsuarios() {
   }
 }
 
+async function silenciarLista(number) {
+  const querySilence = `UPDATE users SET silenciar = !silenciar where number = '${number}'` 
+  try{
+    const res = await new Promise((resolve, reject) => {
+      connection.query(querySilence, (err, result) => {
+        if (err) reject (err);
+        resolve(result)
+      })
+    })
+    return res
+  } catch(error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   cadastrarUser,
   removerUser,
   minhasListas,
-  listarUsuarios
+  listarUsuarios,
+  silenciarLista
 }
