@@ -1,11 +1,15 @@
 const mysql = require("mysql2")
+require("dotenv").config()
 
-const connection = mysql.createConnection({
-  database: 'currencybot',
-  user: 'qgcemyzlri5htp0bsob0',
-  host: 'aws-sa-east-1.connect.psdb.cloud',
-  password: 'pscale_pw_WM7ICH4S2Nws2sO58kfT1GNrg1te1UyxD4z2TlfnRwa',
-  ssl: {}
-})
+
+// const connection = mysql.createConnection({
+//   database: 'currencyBot',
+//   username: '3g35sf3lwdx89rhs1070',
+//   host: 'aws.connect.psdb.cloud',
+//   password: 'pscale_pw_2CGZBmvwRDFgEyuoAg768IunRociabHKhtMH2odsX2k',
+//   ssl: {}
+// })
+const connection = mysql.createConnection(process.env.DATABASE_URL)
+
 
 module.exports = connection

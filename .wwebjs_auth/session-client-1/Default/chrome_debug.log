@@ -1,2 +1,10 @@
-[0823/151208.900:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
-[0823/151208.901:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0824/093550.394:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
+[0824/093550.604:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'ambient-light-sensor'.", source:  (0)
+[0824/093550.604:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.", source:  (0)
+[0824/093550.610:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
+[0824/093550.612:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
+[0824/093550.613:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
+[0824/093550.613:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
+[0824/093550.616:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
+[0824/093550.616:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
+[0824/093550.616:WARNING:backend_impl.cc(1826)] Destroying invalid entry.
