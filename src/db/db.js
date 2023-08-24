@@ -9,6 +9,7 @@ require("dotenv").config()
 //   password: 'pscale_pw_2CGZBmvwRDFgEyuoAg768IunRociabHKhtMH2odsX2k',
 //   ssl: {}
 // })
+console.log(process.env.DATABASE_URL);
 const connection = mysql.createConnection(process.env.DATABASE_URL)
 
 
